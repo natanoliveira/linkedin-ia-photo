@@ -57,8 +57,26 @@ npm run dev
 
 Abra `http://localhost:3000` no navegador para acessar a interface da Linkfotos AI.
 
+### Procedimentos efetuados
+
+- **Fluxo de geração de foto**
+  - Integração da função `generateProfessionalPhoto` em `@/lib/api/analyse` usando React Query (`useMutation`).
+  - Tratamento de loading e disable do botão “Gerar foto profissional” via `useTransition` + estado de mutação.
+  - Estrutura preparada para log/persistência de requisições em camadas de serviço seguindo o padrão de `/.cursor`.
+
+- **Experiência de resultado**
+  - Implementação do componente `ResultView` e do passo `"result"` em `HomeContent`, com controle de fluxo `home → result → home`.
+  - Suporte a visualização da foto selecionada e da foto gerada, além da ação de **reiniciar fluxo** (`handleStartOver`).
+  - Layout responsivo alinhado ao grid principal da página.
+
+- **Organização e reuso**
+  - Componentização da home em `Header`, `Hero`, `UploadPhoto`, `ResultView` e `HomeContent`, todos em `_components`, conforme `/.cursor/page-rules.mdc`.
+  - Separação entre UI (componentes) e lógica de chamada de API (função `generateProfessionalPhoto` em `@/lib/api/analyse`).
+
+- **Qualidade e observabilidade**
+  - Estrutura de estados e tipos preparada para futura adição de testes (Jest + React Testing Library) e monitoramento (ex.: Sentry), conforme recomendações de `/.cursor/rules.mdc`.
+
 ### Próximos passos sugeridos
 
-- Implementar a lógica real de **geração de foto profissional** ao clicar no botão “Gerar foto profissional” (provavelmente via API/Server Action).
-- Conectar o fluxo de `generatedPhoto` em `content.tsx` a um componente de **resultado** (preview antes/depois, download, etc.).
-- Adicionar testes (Jest + React Testing Library) para os componentes `Header`, `Hero` e `UploadPhoto`, conforme recomendações de `/.cursor/rules.mdc`.
+- Definir e documentar cenários de erro da API (limite de tamanho, formatos inválidos, indisponibilidade do serviço de IA) e como serão exibidos na UI.
+- Adicionar testes automatizados para o fluxo completo (upload → geração → resultado → recomeçar).
